@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebSocket Cliente</title>
+  <link rel="stylesheet" href="/public/index.css">
+</head>
+
+<body>
+  <h1>WebSocket Cliente</h1>
+  <div id="msgs"></div>
+  <div style="display: flex; width: 100%; max-width: 600px;">
+    <input type="text" name="writeMsg" id="writeMsg" placeholder="Digite sua mensagem aqui...">
+    <button id="sendMessage">Enviar Mensagem</button>
+  </div>
+
+  <script>
+    const ws = new WebSocket('ws://localhost:8080');
+
+    ws.onmessage = (event) => {
+      const msgElement = document.createElement('p');
+      msgElement.innerText = event.data;
+      document.getElementById('msgs').appendChild(msgElement);
+      document.getElementById('msgs').scrollTop = document.getElementById('msgs').scrollHeight;
+    };
+
+    document.getElementById('sendMessage').onclick = () => {
+      const message = document.getElementById('writeMsg').value;
+      if (message) {
+        ws.send(message);
+        document.getElementById('writeMsg').value = '';
+      }
+    };
+
+  </script>
+</body>
+
+</html>
